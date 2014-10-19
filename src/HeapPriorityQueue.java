@@ -2,10 +2,7 @@
 
 // TODO: class comment header
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class HeapPriorityQueue<E> implements PriorityQueue<E> {
 	private E[] elements;
@@ -23,7 +20,7 @@ public class HeapPriorityQueue<E> implements PriorityQueue<E> {
 			throw new IllegalArgumentException();
 		}
 		this.comparator = comparator;
-		pq = new HeapPriorityQueue<E>(capacity, comparator);
+		elements = (E[]) new Object[capacity];
 		
 	}
 	
@@ -123,12 +120,27 @@ public class HeapPriorityQueue<E> implements PriorityQueue<E> {
 			int kiddo = left;
 			if (hasRightChild(index)) {
 				int right = rightChild(index);
-				if (elements[right].compareTo(elements[left]) < 0) {
+				int lol = 0;
+				// check to see if comparator was passed, if not use natural ordering
+				if (this.comparator != null){
+					lol = comparator.compare(elements[right],(elements[left]));
+				}else{
+					Comparable<E> lol2 = (Comparable<E>) elements[right];
+					lol =  lol2.compareTo(elements[index]);
+				}
+				if (lol < 0) {
 					kiddo = right;
 				}
 			}
-			
-			if (elements[index].compareTo(elements[kiddo]) > 0) {
+			int lol = 0;
+			// check to see if comparator was passed, if not use natural ordering
+			if (this.comparator != null){
+				lol = comparator.compare(elements[index],(elements[kiddo]));
+			}else{
+				Comparable<E> lol2 = (Comparable<E>) elements[index];
+				lol =  lol2.compareTo(elements[kiddo]);
+			}
+			if (lol > 0) {
 				swap(elements, index, kiddo);
 				index = kiddo;
 			} else {
@@ -154,8 +166,17 @@ public class HeapPriorityQueue<E> implements PriorityQueue<E> {
 	
 	// TODO: comment header
 	public String toString() {
-		// this is an incorrect implementation for debugging
-				return Arrays.toString(elements);
+		if (isEmpty()){
+			return "[]";
+		}else{
+			String lol = "[";
+				for(int i = 0; i < elements.length; i++){
+					if (elements[i] != null){
+						lol = lol + elements[i]+", ";
+					}
+				}
+				return lol.substring(0,lol.length()-2) +"]";
+		}
 	}
 	
 	// helpers for navigating indexes up/down the tree
