@@ -25,7 +25,9 @@ public class basictest {
 		System.out.println(pq);
 		pq.add(50);
 		System.out.println(pq);
-		System.out.println(pq.remove());
+		System.out.println("this is the last one");
+		pq.remove(50);
+		System.out.println(pq);
 	}
 
 }

@@ -70,7 +70,7 @@ public class HeapPriorityQueue<E> implements PriorityQueue<E> {
 
 	
 	public boolean contains(E value) {
-		for (int i = 0; i < elements.length; i++) {
+		for (int i = 1; i < elements.length; i++) {
 			if (elements[i].equals(value)){
 				return true;
 			}else{
@@ -92,8 +92,29 @@ public class HeapPriorityQueue<E> implements PriorityQueue<E> {
 
 	// TODO: comment header
 	public Iterator<E> iterator() {
-		// TODO: implement this method
-		return null;
+		return new HeapPriorityQueueIterator();
+	}
+	
+	private class HeapPriorityQueueIterator implements Iterator<E> {
+		private int index = 1;
+		
+		public HeapPriorityQueueIterator() {
+
+		}
+		public boolean hasNext() {
+			return elements[index] != null && index <= elements.length-1;
+		}
+		
+		public E next() {
+			E result = elements[index];
+			index++;
+			return result;
+		}
+		
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+		
 	}
 
 	// TODO: comment header
@@ -155,7 +176,18 @@ public class HeapPriorityQueue<E> implements PriorityQueue<E> {
 
 	// TODO: comment header
 	public void remove(E value) {
-	
+		if (value == null){
+			throw new NullPointerException();
+		}
+		for (int i = 1; i < elements.length; i++){
+			if (elements[i] == null) {
+				
+			}else if (elements[i].equals(value)){
+				elements[i] = null;
+				size--;
+				break;
+			}
+		}
 	}
 	
 	// TODO: comment header
